@@ -1,0 +1,50 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import Navbar from '@/components/Navbar'
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Pokemon App",
+  description: "Pokedex Go",
+  authors: {name: "Luisinho Dev"},
+  keywords: "XXXX, pokemon, pokedex"
+};
+
+//NOTE: You are at video 21. 4.- Static Generated App
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className=" container mx-auto">
+            {children}
+          </main>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
