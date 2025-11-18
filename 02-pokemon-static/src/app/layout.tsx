@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   keywords: "XXXX, pokemon, pokedex"
 };
 
-//NOTE: You are at video 21. 4.- Static Generated App
+//NOTE: You are at video 8. 5.- Pokemon Static
 
 export default function RootLayout({
   children,

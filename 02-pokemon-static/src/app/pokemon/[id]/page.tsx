@@ -1,10 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Pokemon } from '@/interfaces/pokemon-full'
+import { Metadata, ResolvingMetadata } from 'next';
+import FavoriteButton from '@/components/pokemon/FavoriteButton'
 
 interface Props {
   params: Promise<{ id: string }>
 }
+
+// 1. Define las props que recibe generateMetadata
+type PropsMeta = {
+  // params: { id: string }; // Contiene el ID del Pokémon de la ruta [id]
+  params: Promise<{ id: string }>
+  searchParams: { [key: string]: string | string[] | undefined }; // Parámetros de consulta
+};
 
 export async function generateStaticParams() {
   const limit = 10
@@ -71,6 +80,45 @@ async function getPokemon(id: string) {
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
+}
+
+// 2. Exporta la función asíncrona generateMetadata
+export async function generateMetadata(
+  { params }: PropsMeta,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { id } = await params;
+  console.log(id)
+  const pokemon = await getPokemon(id);
+
+  if (!pokemon) {
+    return {
+      title: 'Pokémon no encontrado',
+    };
+  }
+
+  // Define el título base, la descripción, y la imagen (Open Graph)
+  const title = `¡${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}! - Pokédex`;
+  const description = `Conoce todo sobre el Pokémon ${pokemon.name}. Tipo(s): ${pokemon.types.map((t: any) => t.type.name).join(', ')}.`;
+  const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: [
+        {
+          url: imageUrl,
+          width: 500,
+          height: 500,
+          alt: pokemon.name,
+        },
+      ],
+    },
+    // Añade más campos de metadatos si es necesario (Twitter, keywords, etc.)
+  };
 }
 
 // Componente principal de la página de detalles
@@ -167,20 +215,7 @@ export default async function PokemonPage({ params }: Props) {
           </div>
 
           {/* Botón de Favoritos */}
-          <button
-            className={`px-8 py-3 rounded-full text-white font-bold text-lg shadow-lg transition-all duration-300 transform hover:scale-105
-              ${false ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-700'}`}
-          >
-            {false ? (
-              <>
-                <i className="fas fa-heart mr-2"></i> Quitar de Favoritos
-              </>
-            ) : (
-              <>
-                <i className="far fa-heart mr-2"></i> Guardar en Favoritos
-              </>
-            )}
-          </button>
+          <FavoriteButton pokemonId={pokemon.id} />
           {/* --- Nueva Sección de Sprites --- */}
           {availableSprites.length > 0 && (
             <div className="mt-8 w-full max-w-sm">
