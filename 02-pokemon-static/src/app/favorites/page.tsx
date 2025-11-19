@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Favorites from '@/components/pokemon/Favorites'
 
 export const metadata: Metadata = {
   title: "Pokemon Favorites",
@@ -8,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 const FavoritesPage = () => {
-  return (
-    <>
-      <h1>Favorites</h1>
-    </>
-  )
+  return <Favorites />
 }
 
 export default FavoritesPage
