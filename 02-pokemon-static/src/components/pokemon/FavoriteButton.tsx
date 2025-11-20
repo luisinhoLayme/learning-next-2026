@@ -2,6 +2,7 @@
 
 import { FC, useState } from 'react';
 import { toggleFavorite, existInFavorites} from '@/utils/localFavotites'
+import confetti from 'canvas-confetti'
 
 interface Props {
   pokemonId: number
@@ -13,6 +14,19 @@ const FavoriteButton: FC<Props> = ({ pokemonId }) => {
   const onToggleFavorite = () => {
     setIsFavorite(!isFavorite)
     toggleFavorite(pokemonId)
+
+    if(!isFavorite) {
+      confetti({
+        zIndex: 999,
+        particleCount: 100,
+        spread: 160,
+        angle: -100,
+        origin: {
+          x: 1,
+          y: 0
+        }
+      })
+    }
   };
 
   return (

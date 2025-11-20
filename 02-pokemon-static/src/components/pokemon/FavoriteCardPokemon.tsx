@@ -1,25 +1,20 @@
-"use client"
 
-import Image from "next/image";
-import { SmallPokemon } from "@/interfaces/pokemon-list";
-import { FC } from "react";
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { FC } from 'react'
 
 interface Props {
-  pokemon: SmallPokemon;
+  id: number
 }
 
-const PokemonCard: FC<Props> = ({ pokemon }) => {
+const FavoriteCardPokemon:FC<Props> = ({ id }) => {
   const router = useRouter()
 
-  const onClick = () => {
-    router.push(`/pokemon/${pokemon.id}`)
-    // router.push(`/pokemonName/${pokemon.name}`)
-  }
   return (
     <motion.article
-      onClick={onClick}
+      key={id}
+      onClick={() => router.push(`/pokemon/${id}`)}
       whileHover={{ scale: 1.06 }}
       transition={{ type: "spring", stiffness: 250, damping: 15 }}
       className="
@@ -32,16 +27,12 @@ const PokemonCard: FC<Props> = ({ pokemon }) => {
 
       <div className="relative w-40 h-40 mb-2">
         <Image
-          src={pokemon.img}
-          alt={pokemon.name}
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+          alt={'pokemon #${ id }'}
           fill
           className="object-contain drop-shadow-lg"
         />
       </div>
-
-      <span className="font-semibold text-white tracking-wide">
-        #{pokemon.id} • {pokemon.name}
-      </span>
 
       {/* fondo difuminado detrás del Pokémon */}
       <div className="
@@ -50,7 +41,7 @@ const PokemonCard: FC<Props> = ({ pokemon }) => {
         rounded-2xl blur-xl
       " />
     </motion.article>
-  );
-};
+  )
+}
 
-export default PokemonCard;
+export default FavoriteCardPokemon

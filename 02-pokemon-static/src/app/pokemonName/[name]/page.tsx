@@ -1,28 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Pokemon } from '@/interfaces/pokemon-full'
 import { Metadata, ResolvingMetadata } from 'next';
 import FavoriteButton from '@/components/pokemon/FavoriteButton'
-import { getPokemonInfo } from '@/utils/getPokemonInfo';
+import { PokemonListResponse } from '@/interfaces/pokemon-list';
+import { getPokemonInfo } from '@/utils/getPokemonInfo'
 
 interface Props {
-  params: Promise<{ id: string }>
+  params: Promise<{ name: string }>
 }
 
 // 1. Define las props que recibe generateMetadata
 type PropsMeta = {
   // params: { id: string }; // Contiene el ID del Pokémon de la ruta [id]
-  params: Promise<{ id: string }>
+  params: Promise<{ name: string }>
   searchParams: { [key: string]: string | string[] | undefined }; // Parámetros de consulta
 };
 
 export async function generateStaticParams() {
-  const limit = 10
+  // const limit = 10
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`)
+  const data: PokemonListResponse = await res.json()
 
-  return Array.from({ length: limit }, (_, index) => ({
-    id: (index + 1).toString()
+  const pokemonsName: string[] = data.results.map(pokemon => pokemon.name)
 
-  }))
+  // console.log(pokemonsName.map(name => ({name})))
+  return pokemonsName.map(name => ({name}))
 }
 
 // async function getPokemon(id: string) {
@@ -36,14 +38,13 @@ export async function generateStaticParams() {
 // Define el número máximo de intentos que quieres realizar
 const MAX_RETRIES = 4;
 
-async function getPokemon(id: string) {
+async function getPokemon(name: string) {
   // Bucle para intentar hasta MAX_RETRIES veces
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.log(`Intentando obtener Pokémon ${id}... (Intento ${attempt}/${MAX_RETRIES})`);
+      console.log(`Intentando obtener Pokémon ${name}... (Intento ${attempt}/${MAX_RETRIES})`);
 
-      // Si la respuesta es OK (código 200-299), devolvemos el resultado
-      const {ok, status, data} = await getPokemonInfo(id)
+      const {ok, status, data} = await getPokemonInfo(name)
 
       if (ok) {
         return data
@@ -51,7 +52,7 @@ async function getPokemon(id: string) {
 
       // Si la respuesta no es OK (ej. 404 Not Found), lanzamos un error inmediatamente
       // Esto detiene el bucle de reintento, ya que no es un error temporal.
-      throw new Error(`Error HTTP: ${status} al obtener el Pokémon ${id}`);
+      throw new Error(`Error HTTP: ${status} al obtener el Pokémon ${name}`);
 
     } catch (error: any) {
       // Manejamos el error (como el 'fetch failed' o 'ETIMEDOUT')
@@ -59,7 +60,7 @@ async function getPokemon(id: string) {
 
       // Si es el último intento, lanzamos el error para que sea manejado por la función que llama (PokemonPage)
       if (attempt === MAX_RETRIES) {
-        throw new Error(`Fallo definitivo al obtener el Pokémon ${id} después de ${MAX_RETRIES} intentos.`);
+        throw new Error(`Fallo definitivo al obtener el Pokémon ${name} después de ${MAX_RETRIES} intentos.`);
       }
 
       // --- 💡 Lógica de Retroceso Exponencial ---
@@ -84,9 +85,9 @@ export async function generateMetadata(
   { params }: PropsMeta,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { id } = await params;
-  console.log(id)
-  const pokemon = await getPokemon(id);
+  const { name } = await params;
+  console.log(name)
+  const pokemon = await getPokemon(name);
 
   if (!pokemon) {
     return {
@@ -98,7 +99,6 @@ export async function generateMetadata(
   const title = `¡${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}! - Pokédex`;
   const description = `Conoce todo sobre el Pokémon ${pokemon.name}. Tipo(s): ${pokemon.types.map((t: any) => t.type.name).join(', ')}.`;
   const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
-  // const imageUrl = `http://localhost:3000/pokemonBanner.jpg`;
 
   return {
     title: title,
@@ -122,8 +122,8 @@ export async function generateMetadata(
 // Componente principal de la página de detalles
 export default async function PokemonPage({ params }: Props) {
 
-  const { id } = await params
-  const pokemon = await getPokemon(id)
+  const { name } = await params
+  const pokemon = await getPokemon(name)
 
   // if (loading) {
   //   return (

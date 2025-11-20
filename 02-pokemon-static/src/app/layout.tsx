@@ -18,10 +18,10 @@ export const metadata: Metadata = {
   title: "Pokemon App",
   description: "Pokedex Go",
   authors: {name: "Luisinho Dev"},
-  keywords: "XXXX, pokemon, pokedex"
+  keywords: "XXXX, pokemon, pokedex",
 };
 
-//NOTE: You are at video 10. 5.- Pokemon Static
+//NOTE: You are at video 18. 5.- Pokemon Static
 
 export default function RootLayout({
   children,
