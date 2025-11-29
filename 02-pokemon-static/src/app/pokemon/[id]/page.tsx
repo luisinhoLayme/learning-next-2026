@@ -16,12 +16,14 @@ type PropsMeta = {
   searchParams: { [key: string]: string | string[] | undefined }; // Parámetros de consulta
 };
 
+
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   const limit = 10
 
   return Array.from({ length: limit }, (_, index) => ({
     id: (index + 1).toString()
-
   }))
 }
 

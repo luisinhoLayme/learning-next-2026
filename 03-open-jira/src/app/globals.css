@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "blossom";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+
+  --color-base-100: oklch(97% 0.015 330);
+  --color-base-200: oklch(94% 0.018 330);
+  --color-base-300: oklch(90% 0.02 330);
+  --color-base-content: oklch(27% 0.03 310);
+
+  --color-primary: oklch(82% 0.12 340);      /* rosa pastel */
+  --color-primary-content: oklch(25% 0.04 340);
+
+  --color-secondary: oklch(88% 0.13 290);    /* lila suave */
+  --color-secondary-content: oklch(30% 0.04 290);
+
+  --color-accent: oklch(85% 0.14 20);        /* melón suave */
+  --color-accent-content: oklch(28% 0.06 20);
+
+  --color-neutral: oklch(72% 0.015 260);
+  --color-neutral-content: oklch(20% 0.02 260);
+
+  --color-info: oklch(70% 0.18 240);
+  --color-success: oklch(72% 0.15 160);
+  --color-warning: oklch(80% 0.25 80);
+  --color-error: oklch(70% 0.22 30);
+
+  --radius-selector: 0.3rem;
+  --radius-field: 0.35rem;
+  --radius-box: 0.5rem;
+  --noise: 0.01;
+  --depth: 0.1;
+}
+
+@plugin "daisyui/theme" {
+  name: "midnightBlossom";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+
+  --color-base-100: oklch(22% 0.015 300);
+  --color-base-200: oklch(18% 0.015 300);
+  --color-base-300: oklch(15% 0.012 300);
+  --color-base-content: oklch(92% 0.02 300);
+
+  --color-primary: oklch(70% 0.18 350);      /* rosa neón */
+  --color-primary-content: oklch(12% 0.03 350);
+
+  --color-secondary: oklch(68% 0.20 290);    /* lila neón */
+  --color-secondary-content: oklch(12% 0.03 290);
+
+  --color-accent: oklch(74% 0.22 20);        /* melón neón */
+  --color-accent-content: oklch(12% 0.04 20);
+
+  --color-neutral: oklch(32% 0.015 280);
+  --color-neutral-content: oklch(90% 0.02 280);
+
+  --color-info: oklch(68% 0.22 240);
+  --color-success: oklch(63% 0.18 160);
+  --color-warning: oklch(75% 0.25 80);
+  --color-error: oklch(65% 0.22 30);
+
+  --radius-selector: 0.3rem;
+  --radius-field: 0.35rem;
+  --radius-box: 0.6rem;
+  --noise: 0.04;
+  --depth: 0.25;
+}
+
+@custom-variant dark (&:where([data-theme=midnightBlossom], [data-theme=midnightBlossom] *));
