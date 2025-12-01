@@ -3,6 +3,7 @@
 import { use } from 'react'
 import ThemeSwitcher from '../theme-switcher'
 import { UIContext } from '@/context/ui'
+import { CirclePlus } from 'lucide-react'
 
 const Navbar = () => {
   const { sidemenuOpen, openSideMenu, closeSideMenu } = use(UIContext)
@@ -30,15 +31,21 @@ const Navbar = () => {
           </ul>
         </div>
         <a className="btn btn-ghost text-xl">OpenJIRA</a>
-        {
-          sidemenuOpen
-           ? <button onClick={closeSideMenu} className="btn btn-xs btn-soft btn-warning">close</button>
-           : <button onClick={openSideMenu} className="btn btn-xs btn-soft btn-success">open</button>
-        }
-        <span
-          className={`ml-2 font-bold ${sidemenuOpen ? 'text-success': 'text-warning'}`}>
-          { sidemenuOpen ? 'Menu open' : 'Menu closed' }
-        </span>
+
+        <button className="btn btn-sm btn-soft btn-secondary">
+        <CirclePlus size={16} />
+          Add Task
+        </button>
+
+        {/* { */}
+        {/*   sidemenuOpen */}
+        {/*    ? <button onClick={closeSideMenu} className="btn btn-xs btn-soft btn-warning">close</button> */}
+        {/*    : <button onClick={openSideMenu} className="btn btn-xs btn-soft btn-success">open</button> */}
+        {/* } */}
+        {/* <span */}
+        {/*   className={`ml-2 font-bold ${sidemenuOpen ? 'text-success': 'text-warning'}`}> */}
+        {/*   { sidemenuOpen ? 'Menu open' : 'Menu closed' } */}
+        {/* </span> */}
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
