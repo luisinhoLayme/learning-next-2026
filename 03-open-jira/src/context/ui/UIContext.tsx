@@ -3,11 +3,11 @@
 import { createContext } from 'react'
 
 export interface ContextProps {
-  sidemenuOpen: boolean
+  isAddingTask: boolean
 
   //Methods
-  openSideMenu: () => void
-  closeSideMenu: () => void
+  openAddForm: () => void
+  closeAddForm: () => void
 }
 
 export const UIContext = createContext({} as ContextProps)

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "Open Jira Task Manager",
 };
 
-// WARN: your at video 15, at Open Jira
+// WARN: your at video 11, 8. Open Jira
 
 export default function RootLayout({
   children,

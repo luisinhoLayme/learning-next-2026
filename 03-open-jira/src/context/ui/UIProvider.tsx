@@ -8,29 +8,29 @@ interface Props {
 }
 
 export interface UIState {
-  sidemenuOpen: boolean
+  isAddingTask: boolean
 }
 
 const UI_INITIAL_STATE: UIState = {
-  sidemenuOpen: false
+  isAddingTask: false
 }
 
 export const UIProvider:FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE)
 
-  const openSideMenu = () => {
-    dispatch({ type: '[UI] - OpenSidebar' })
+  const openAddForm = () => {
+    dispatch({ type: '[UI]-OpenAddForm' })
   }
-  const closeSideMenu = () => {
-    dispatch({ type: '[UI] - CloseSidebar' })
+  const closeAddForm = () => {
+    dispatch({ type: '[UI]-CloseAddForm' })
   }
 
   return (
     <UIContext value={{
       ...state,
       //Methods
-      openSideMenu,
-      closeSideMenu
+      openAddForm,
+      closeAddForm
     }}>
       {children}
     </UIContext>

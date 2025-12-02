@@ -9,6 +9,20 @@ interface Props {
   status: EntryStatus
 }
 
+const colors = {
+  'pending': {
+    bg: 'bg-warning/5 hover:bg-warning/7',
+    text: 'text-warning/60'
+  },
+  'in-progress': {
+    bg: 'bg-info/5 hover:bg-info/7',
+    text: 'text-info/60'
+  },
+  'finished': {
+    bg: 'bg-success/5 hover:bg-success/7',
+    text: 'text-success/60'
+  },
+}
 const EntryList:FC<Props> = ({ status }) => {
   const { entries } = use(EntriesContext)
 
@@ -20,7 +34,7 @@ const EntryList:FC<Props> = ({ status }) => {
         <li className="grid gap-2">
           {
             entriesByStatus.map(entry => (
-              <EntryCard key={entry.id} entry={entry} />
+              <EntryCard key={entry.id} entry={entry} colors={colors[entry.status]} />
             ))
           }
         </li>

@@ -5,29 +5,17 @@ import { Entry } from '@/interfaces/entry'
 
 interface Props {
   entry: Entry
+  colors: {bg: string, text: string}
 }
 
-const EntryCard:FC<Props> = ({entry}) => {
 
-  const [ color, setColor ] = useState('warning')
-
-  useEffect(() => {
-    if (entry.status === 'pending') {
-      setColor('warning')
-    }
-    if (entry.status === 'in-progress') {
-      setColor('info')
-    }
-    if (entry.status === 'finished') {
-      setColor('success')
-    }
-  }, [entry.status])
+const EntryCard:FC<Props> = ({entry, colors}) => {
 
   return (
-    <article className={`bg-${color}/5  min-h-20 cursor-pointer select-none hover:bg-${color}/7 transition-colors rounded-md`}>
+    <article className={`${colors.bg} min-h-20 cursor-pointer select-none transition-colors rounded-md`}>
       <div className="p-2 h-full flex flex-col justify-between">
         <p className="dark:text-slate-50/80">{entry.description}</p>
-        <footer className={`flex justify-end text-xs text-${color}/60`}>
+        <footer className={`flex justify-end text-xs ${ colors.text }`}>
           Hace 30 minutos
         </footer>
       </div>

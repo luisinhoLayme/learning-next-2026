@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <main className="container mx-auto py-6">
-      <HeroSection data={strapiData.sections} />
+      <HeroSection data={strapiData?.sections} />
     </main>
   );
 }
