@@ -3,11 +3,13 @@
 import { createContext } from 'react'
 
 export interface ContextProps {
-  isAddingTask: boolean
+  isAddingEntry: boolean
+  isDragging: boolean
 
   //Methods
-  openAddForm: () => void
-  closeAddForm: () => void
+  setIsAddingEntry: (value: boolean) => void
+  startDragging: () => void
+  endDragging: () => void
 }
 
 export const UIContext = createContext({} as ContextProps)

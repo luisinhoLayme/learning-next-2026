@@ -2,8 +2,9 @@
 
 import { EntryStatus } from '@/interfaces/entry'
 import EntryCard from './entry-card'
-import { FC, use } from 'react'
+import { DragEvent, FC, use } from 'react'
 import { EntriesContext } from '@/context/entries'
+import { UIContext } from '@/context/ui'
 
 interface Props {
   status: EntryStatus
@@ -25,12 +26,28 @@ const colors = {
 }
 const EntryList:FC<Props> = ({ status }) => {
   const { entries } = use(EntriesContext)
+  const { isDragging } = use(UIContext)
 
   const entriesByStatus = entries.filter(entry => entry.status === status)
 
+  const allowDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+
+  const onDropEntry = (e: DragEvent<HTMLDivElement>) => {
+    const id = e.dataTransfer.getData('text')
+    // console.log({id})
+  }
+
   return (
-    <section>
-      <ul className="list h-[calc(100vh-125px)] overflow-auto">
+    <section
+      onDrop={onDropEntry}
+      onDragOver={allowDrop}
+      className={`${isDragging ? 'bg-amber-50/5 border-dashed border-amber-50/30 border-2 ':'border-2 border-transparent'} w-full h-[calc(100vh-120px)] p-2 rounded-md`}
+    >
+      <ul
+        className={`list h-[calc(100vh-125px)] overflow-auto ${ isDragging ? 'opacity-60' : '' }`}
+      >
         <li className="grid gap-2">
           {
             entriesByStatus.map(entry => (

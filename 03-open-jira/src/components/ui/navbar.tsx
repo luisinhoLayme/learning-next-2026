@@ -6,7 +6,7 @@ import { UIContext } from '@/context/ui'
 import { CirclePlus } from 'lucide-react'
 
 const Navbar = () => {
-  const { openAddForm } = use(UIContext)
+  const { setIsAddingEntry } = use(UIContext)
 
   return (
     <div className="navbar bg-base-100 shadow-sm dark:shadow-gray-50/20">
@@ -32,7 +32,7 @@ const Navbar = () => {
         </div>
         <a className="btn btn-ghost text-xl">OpenJIRA</a>
 
-        <button onClick={openAddForm} className="btn btn-sm btn-soft btn-secondary">
+        <button onClick={() => setIsAddingEntry(true)} className="btn btn-sm btn-soft btn-secondary">
         <CirclePlus size={16} />
           Add Task
         </button>

@@ -8,29 +8,38 @@ interface Props {
 }
 
 export interface UIState {
-  isAddingTask: boolean
+  isAddingEntry: boolean
+  isDragging: boolean
 }
 
 const UI_INITIAL_STATE: UIState = {
-  isAddingTask: false
+  isAddingEntry: false,
+  isDragging: false
 }
 
 export const UIProvider:FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE)
 
-  const openAddForm = () => {
-    dispatch({ type: '[UI]-OpenAddForm' })
+  const setIsAddingEntry = (value: boolean) => {
+    dispatch({ type: '[UI]-ToggleForm', payload: value })
   }
-  const closeAddForm = () => {
-    dispatch({ type: '[UI]-CloseAddForm' })
+
+  const startDragging = () => {
+    dispatch({ type: '[UI]-StartDragging' })
+  }
+
+  const endDragging = () => {
+    dispatch({ type: '[UI]-EndDragging' })
   }
 
   return (
     <UIContext value={{
       ...state,
       //Methods
-      openAddForm,
-      closeAddForm
+      setIsAddingEntry,
+
+      startDragging,
+      endDragging
     }}>
       {children}
     </UIContext>

@@ -1,7 +1,8 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { DragEvent, FC, use, useEffect, useState } from 'react'
 import { Entry } from '@/interfaces/entry'
+import { UIContext } from '@/context/ui'
 
 interface Props {
   entry: Entry
@@ -10,11 +11,30 @@ interface Props {
 
 
 const EntryCard:FC<Props> = ({entry, colors}) => {
+  const { startDragging, endDragging } = use(UIContext)
+
+  const onDragStart = (e: DragEvent<HTMLDivElement>) => {
+    // console.log(e)
+    e.dataTransfer.setData('text', entry.id)
+
+    // modificar el estado, para indicar que estoy haciendo drag
+    startDragging()
+  }
+
+  const onDragEnd = () => {
+    // cancelar on drag
+    endDragging()
+  }
 
   return (
-    <article className={`${colors.bg} min-h-20 cursor-pointer select-none transition-colors rounded-md`}>
+    <article
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      className={`${colors.bg} min-h-20 cursor-pointer select-none transition-colors rounded-md`}
+    >
       <div className="p-2 h-full flex flex-col justify-between">
-        <p className="dark:text-slate-50/80">{entry.description}</p>
+        <p className="dark:text-slate-50/80 whitespace-pre-wrap">{entry.description}</p>
         <footer className={`flex justify-end text-xs ${ colors.text }`}>
           Hace 30 minutos
         </footer>

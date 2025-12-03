@@ -1,21 +1,28 @@
 import { UIState } from './'
 
 type UIActionType =
-| { type: '[UI]-OpenAddForm' }
-| { type: '[UI]-CloseAddForm' }
+| { type: '[UI]-ToggleForm', payload: boolean }
+| { type: '[UI]-StartDragging' }
+| { type: '[UI]-EndDragging' }
 
 export const uiReducer = (state: UIState, action: UIActionType): UIState => {
   switch (action.type) {
-    case '[UI]-OpenAddForm':
+    case '[UI]-ToggleForm':
       return {
         ...state,
-        isAddingTask: true
+        isAddingEntry: action.payload
       }
 
-    case '[UI]-CloseAddForm':
+    case '[UI]-StartDragging':
       return {
         ...state,
-        isAddingTask: false
+        isDragging: true
+      }
+
+    case '[UI]-EndDragging':
+      return {
+        ...state,
+        isDragging: false
       }
 
     default:
