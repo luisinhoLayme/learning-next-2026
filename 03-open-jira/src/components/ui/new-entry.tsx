@@ -22,7 +22,7 @@ const NewEntry = () => {
   // console.log({ formState, isPending })
   useEffect(() => {
     if (formState.success) {
-      addNewEntry(formState.description)
+      addNewEntry(formState.data!)
       setIsAddingEntry(false)
     }
   }, [formState])

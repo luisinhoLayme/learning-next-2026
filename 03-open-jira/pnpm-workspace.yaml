@@ -1,3 +1,7 @@
 onlyBuiltDependencies:
   - '@heroui/shared-utils'
+  - '@prisma/engines'
+  - better-sqlite3
+  - esbuild
+  - prisma
   - sharp

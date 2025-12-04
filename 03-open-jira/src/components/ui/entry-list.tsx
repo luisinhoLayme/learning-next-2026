@@ -11,22 +11,22 @@ interface Props {
 }
 
 const colors = {
-  'pending': {
+  pending: {
     bg: 'bg-warning/5 hover:bg-warning/7',
     text: 'text-warning/60'
   },
-  'in-progress': {
+  progress: {
     bg: 'bg-info/5 hover:bg-info/7',
     text: 'text-info/60'
   },
-  'finished': {
+  finished: {
     bg: 'bg-success/5 hover:bg-success/7',
     text: 'text-success/60'
   },
 }
 const EntryList:FC<Props> = ({ status }) => {
-  const { entries } = use(EntriesContext)
-  const { isDragging } = use(UIContext)
+  const { entries, updateEntry } = use(EntriesContext)
+  const { isDragging, endDragging } = use(UIContext)
 
   const entriesByStatus = entries.filter(entry => entry.status === status)
 
@@ -36,7 +36,11 @@ const EntryList:FC<Props> = ({ status }) => {
 
   const onDropEntry = (e: DragEvent<HTMLDivElement>) => {
     const id = e.dataTransfer.getData('text')
-    // console.log({id})
+
+    const entry = entries.find(e => e.id === id)!
+    entry.status = status
+    updateEntry(entry)
+    endDragging()
   }
 
   return (

@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum EntryStatus {
+  pending
+  progress
+  finished
+}
+
+model Entry {
+  // Campo ID (es requerido por Prisma)
+  id          String   @id @default(uuid())
+
+  // description: {type: String, required: true}
+  description String
+
+  // createdAt: {type: Number}
+  // Se recomienda DateTime en Prisma para marcas de tiempo.
+  // El tipo nativo de la base de datos es más preciso.
+  createdAt   DateTime @default(now())
+
+  // status: {type: String, enum: ...}
+  status      EntryStatus @default(pending) // Definimos un valor por defecto
+}
+

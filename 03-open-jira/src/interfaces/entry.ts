@@ -4,6 +4,7 @@ export interface CreateFormState {
   message?: string
   description: string
   errors?: string | null
+  data?: Entry
 }
 
 export interface Entry {
@@ -13,4 +14,10 @@ export interface Entry {
   status: EntryStatus
 }
 
-export type EntryStatus = 'pending' | 'in-progress' | 'finished'
+// export enum EntryStatus {
+//   pending = "pending",
+//   'in-progress' = 'in-progress',
+//   finished = 'finished'
+// }
+
+export type EntryStatus = 'pending' | 'progress' | 'finished'

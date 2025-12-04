@@ -1,5 +1,6 @@
 "use server"
 
+import { Entry } from "@/interfaces/entry";
 import { type CreateFormState } from "@/interfaces/entry";
 
 export const createEntryAction = async (prevState: CreateFormState, formData: FormData): Promise<CreateFormState> => {
@@ -12,16 +13,35 @@ export const createEntryAction = async (prevState: CreateFormState, formData: Fo
       success: false,
       message: 'Error validation',
       description: desc,
-      errors: 'Missing Filed, description'
+      errors: 'Missing Filed, description',
     }
   }
 
+  const resp = await fetch('http://localhost:3000/api/entries', {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({description: desc})
+  })
+  const data: Entry = await resp.json()
+
+  if (resp.ok) {
+    return {
+      success: true,
+      message: 'Success',
+      description: desc,
+      errors: null,
+      data
+    }
+  }
 
   return {
-    success: true,
-    message: 'Success',
+    success: false,
+    message: 'Error Create',
     description: desc,
-    errors: null
+    errors: "Can't create entry",
+    data
   }
 }
 

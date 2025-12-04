@@ -15,7 +15,7 @@ export default function Home() {
         <span className="badge badge-xl badge-soft badge-info ml-2 mt-2">In Progress</span>
         <div className="">
 
-          <EntryList status='in-progress' />
+          <EntryList status='progress' />
         </div>
       </div>
       <div className="card bg-base-100 h-[calc(100vh-80px)] shadow-sm dark:shadow-gray-50/20">

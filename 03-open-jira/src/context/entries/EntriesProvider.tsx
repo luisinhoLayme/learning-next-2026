@@ -1,6 +1,6 @@
 'use client'
 
-import { type FC, type ReactNode, useReducer } from 'react'
+import { type FC, type ReactNode, useEffect, useReducer } from 'react'
 import { EntriesContext, entriesReducer } from './'
 import { Entry } from '@/interfaces/entry'
 
@@ -12,49 +12,39 @@ export interface EntriesState {
   entries: Entry[]
 }
 
-const Entries_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      id: crypto.randomUUID(),
-      description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, aperiam?',
-      status: 'pending',
-      createdAt: Date.now()
-    },
-    {
-      id: crypto.randomUUID(),
-      description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, aperiam?',
-      status: 'in-progress',
-      createdAt: Date.now() - 1000000
-    },
-    {
-      id: crypto.randomUUID(),
-      description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, aperiam?',
-      status: 'finished',
-      createdAt: Date.now() - 100000
-    },
-  ]
+const ENTRIES_INITIAL_STATE: EntriesState = {
+  entries: []
 }
 
-export const EntriesProvider:FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE)
 
-  const addNewEntry = (description: string)=> {
+export const EntriesProvider: FC<Props> = ({ children }) => {
 
-    const newEntry: Entry = {
-      id: crypto.randomUUID(),
-      description,
-      createdAt: Date.now(),
-      status: 'pending'
-    }
+  const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE)
 
-    dispatch({type: '[Entries]-AddEntry', payload: newEntry})
+  const addNewEntry = (newEntry: Entry) => {
 
+    dispatch({ type: '[Entries]-AddEntry', payload: newEntry })
   }
+
+  const updateEntry = (entry: Entry) => {
+    dispatch({ type: '[Entries]-EntryUpdated', payload: entry })
+  }
+
+  const refreshEntries = async () => {
+    const resp = await fetch('/api/entries')
+    const data: Entry[] = await resp.json()
+    dispatch({ type: '[Entries]-RefreshData', payload: data })
+  }
+
+  useEffect(() => {
+    refreshEntries()
+  }, [])
 
   return (
     <EntriesContext value={{
       ...state,
-      addNewEntry
+      addNewEntry,
+      updateEntry
     }}>
       {children}
     </EntriesContext>
