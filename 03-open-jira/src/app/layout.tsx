@@ -4,6 +4,7 @@ import Navbar from '@/components/ui/navbar'
 import "./globals.css";
 import { UIProvider } from "@/context/ui";
 import { EntriesProvider } from "@/context/entries";
+import ToastThemeProvider from '../components/ui/toast-theme-provider'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,8 +21,6 @@ export const metadata: Metadata = {
   description: "Open Jira Task Manager",
 };
 
-// WARN: your at video 21, 9.Open Jira next js API
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,6 +35,7 @@ export default function RootLayout({
           <UIProvider>
             <Navbar />
             {children}
+            <ToastThemeProvider />
           </UIProvider>
         </EntriesProvider>
       </body>

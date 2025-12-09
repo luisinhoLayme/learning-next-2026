@@ -4,6 +4,7 @@ type UIActionType =
 | { type: '[UI]-ToggleForm', payload: boolean }
 | { type: '[UI]-StartDragging' }
 | { type: '[UI]-EndDragging' }
+| { type: '[UI]-ToggleTheme', payload: string }
 
 export const uiReducer = (state: UIState, action: UIActionType): UIState => {
   switch (action.type) {
@@ -23,6 +24,12 @@ export const uiReducer = (state: UIState, action: UIActionType): UIState => {
       return {
         ...state,
         isDragging: false
+      }
+
+    case '[UI]-ToggleTheme':
+      return {
+        ...state,
+        theme: action.payload
       }
 
     default:

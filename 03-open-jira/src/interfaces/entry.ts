@@ -10,13 +10,13 @@ export interface CreateFormState {
 export interface Entry {
   id: string
   description: string
-  createdAt: number
+  createdAt: string
   status: EntryStatus
 }
 
 // export enum EntryStatus {
 //   pending = "pending",
-//   'in-progress' = 'in-progress',
+//   progress = 'progress',
 //   finished = 'finished'
 // }
 

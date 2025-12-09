@@ -4,9 +4,22 @@ import { use } from 'react'
 import ThemeSwitcher from '../theme-switcher'
 import { UIContext } from '@/context/ui'
 import { CirclePlus } from 'lucide-react'
+import Link from 'next/link'
+import { redirect, usePathname } from 'next/navigation'
+import { Sun, Moon } from "lucide-react";
+import { changeTheme } from '../theme-switcher'
 
 const Navbar = () => {
-  const { setIsAddingEntry } = use(UIContext)
+  const { setIsAddingEntry, toggleTheme } = use(UIContext)
+  const pathname = usePathname()
+
+  const showAddingEntry = () => {
+    if (pathname !== '/') {
+      setIsAddingEntry(true)
+      redirect('/')
+    }
+    setIsAddingEntry(true)
+  }
 
   return (
     <div className="navbar bg-base-100 shadow-sm dark:shadow-gray-50/20">
@@ -17,47 +30,48 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={-1}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><a>Item 1</a></li>
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow dark:shadow-gray-50/5">
+            <li><Link href="/">Entries</Link></li>
             <li>
               <a>Theme</a>
               <ul className="p-2">
-                <li><a>light</a></li>
-                <li><a>dark</a></li>
+                <li
+                  onClick={() => {
+                    changeTheme('blossom')
+                    toggleTheme('light')
+                  }}
+                ><a><Sun size={16} /> light</a></li>
+                <li
+                  onClick={() => {
+                    changeTheme('midnightBlossom')
+                    toggleTheme('dark')
+                  }}
+                ><a><Moon size={16} /> dark</a></li>
               </ul>
-              <ThemeSwitcher />
             </li>
-            <li><a>Item 3</a></li>
+            <li><Link href="/how-to-use">How to Use</Link></li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">OpenJIRA</a>
+        <Link href="/" className="btn btn-ghost text-xl">OpenJIRA</Link>
 
-        <button onClick={() => setIsAddingEntry(true)} className="btn btn-sm btn-soft btn-secondary">
-        <CirclePlus size={16} />
-          Add Task
-        </button>
-
-        {/* { */}
-        {/*   sidemenuOpen */}
-        {/*    ? <button onClick={closeSideMenu} className="btn btn-xs btn-soft btn-warning">close</button> */}
-        {/*    : <button onClick={openSideMenu} className="btn btn-xs btn-soft btn-success">open</button> */}
-        {/* } */}
-        {/* <span */}
-        {/*   className={`ml-2 font-bold ${sidemenuOpen ? 'text-success': 'text-warning'}`}> */}
-        {/*   { sidemenuOpen ? 'Menu open' : 'Menu closed' } */}
-        {/* </span> */}
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li><a>Item 1</a></li>
+          <li><Link href="/">Entries</Link></li>
           <li>
             <ThemeSwitcher />
           </li>
-          <li><a>Item 3</a></li>
+          <li><Link href="/how-to-use">How to Use</Link></li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn btn-soft btn-secondary">Logout</a>
+        <button
+          onClick={showAddingEntry}
+          className="btn btn-soft btn-secondary flex items-center"
+        >
+          <CirclePlus size={20} className="w-max h-max" />
+          <span className="w-max h-max capitalize translate-0.5">new entry</span>
+        </button>
       </div>
     </div>
   )

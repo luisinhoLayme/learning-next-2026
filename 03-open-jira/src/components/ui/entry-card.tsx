@@ -3,6 +3,8 @@
 import { DragEvent, FC, use, useEffect, useState } from 'react'
 import { Entry } from '@/interfaces/entry'
 import { UIContext } from '@/context/ui'
+import { useRouter } from 'next/navigation'
+import { timeAgo } from '@/utils/dateFunctions'
 
 interface Props {
   entry: Entry
@@ -11,6 +13,7 @@ interface Props {
 
 
 const EntryCard:FC<Props> = ({entry, colors}) => {
+  const router = useRouter()
   const { startDragging, endDragging } = use(UIContext)
 
   const onDragStart = (e: DragEvent<HTMLDivElement>) => {
@@ -26,8 +29,13 @@ const EntryCard:FC<Props> = ({entry, colors}) => {
     endDragging()
   }
 
+  const onClick = () => {
+    router.push(`/entries/${ entry.id }`)
+  }
+
   return (
     <article
+      onClick={onClick}
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
@@ -36,7 +44,7 @@ const EntryCard:FC<Props> = ({entry, colors}) => {
       <div className="p-2 h-full flex flex-col justify-between">
         <p className="dark:text-slate-50/80 whitespace-pre-wrap">{entry.description}</p>
         <footer className={`flex justify-end text-xs ${ colors.text }`}>
-          Hace 30 minutos
+          { timeAgo(entry.createdAt) }
         </footer>
       </div>
     </article>

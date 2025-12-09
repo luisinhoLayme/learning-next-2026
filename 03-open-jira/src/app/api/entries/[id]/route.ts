@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { EntryStatus } from "@/app/generated/prisma/enums";
 
@@ -22,17 +22,20 @@ export async function GET(request: Request, {params}: Props) {
   }
 }
 
-export async function PATCH(request: Request, { params }: Props) {
+export async function PATCH(request: NextRequest, { params }: Props) {
   const { id } = await params;
 
   try {
     const entry = await prisma.entry.findUnique({ where: { id } })
+
     if (!entry) {
       return NextResponse.json({ message: `Entry not found with id ${id}` }, { status: 400 });
     }
+    // console.log('xd 1: ',entry)
 
-    const { description, status } = await request.json();
+    const { description, status } = await request.json(); // TODO: esto no funciona en propduccion ver
     const dataToUpdate: { description?: string, status?: EntryStatus } = {};
+    // console.log('xd 2: ',{description, status})
 
     if (description !== undefined) {
       if (typeof description !== 'string') return NextResponse.json({ message: 'description must be string' }, { status: 400 });
@@ -54,10 +57,32 @@ export async function PATCH(request: Request, { params }: Props) {
       where: { id },
       data: dataToUpdate
     })
+    // console.log(updateEntry)
 
     return NextResponse.json(updateEntry, { status: 200 });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error:', err);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ message: `Internal Server Error ${ err.message }` }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request, { params }: Props) {
+  const { id } = await params;
+
+  try {
+    // Elimina el registro y retorna el objeto eliminado
+    await prisma.entry.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: `Entry deleted successfully.` }, { status: 200 });
+  } catch (error: any) {
+    // Código P2025 de Prisma para "registro no encontrado"
+    if (error.code === 'P2025') {
+        return NextResponse.json({ message: `Entry with ID ${id} not found.` }, { status: 404 });
+    }
+    console.error(`eror`, error);
+    return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
+  }
+}
+

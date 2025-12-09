@@ -33,6 +33,7 @@ const NewEntry = () => {
         placeholder="New Entry"
         name="description"
         className={`textarea textarea-neutral bg-transparent resize-none w-full mb-2 overflow-hidden`}
+        autoFocus
         onInput={(e: FormEvent<HTMLTextAreaElement>) => {
           const target = e.currentTarget;
           target.style.height = "auto";

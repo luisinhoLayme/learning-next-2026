@@ -10,11 +10,13 @@ interface Props {
 export interface UIState {
   isAddingEntry: boolean
   isDragging: boolean
+  theme: string
 }
 
 const UI_INITIAL_STATE: UIState = {
   isAddingEntry: false,
-  isDragging: false
+  isDragging: false,
+  theme: 'light'
 }
 
 export const UIProvider:FC<Props> = ({ children }) => {
@@ -32,6 +34,10 @@ export const UIProvider:FC<Props> = ({ children }) => {
     dispatch({ type: '[UI]-EndDragging' })
   }
 
+  const toggleTheme = (theme: string) => {
+    dispatch({ type: '[UI]-ToggleTheme', payload: theme })
+  }
+
   return (
     <UIContext value={{
       ...state,
@@ -39,7 +45,8 @@ export const UIProvider:FC<Props> = ({ children }) => {
       setIsAddingEntry,
 
       startDragging,
-      endDragging
+      endDragging,
+      toggleTheme
     }}>
       {children}
     </UIContext>

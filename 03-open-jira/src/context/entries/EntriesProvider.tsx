@@ -3,19 +3,19 @@
 import { type FC, type ReactNode, useEffect, useReducer } from 'react'
 import { EntriesContext, entriesReducer } from './'
 import { Entry } from '@/interfaces/entry'
+import { toast } from 'react-toastify'
 
 interface Props {
   children: ReactNode
 }
 
 export interface EntriesState {
-  entries: Entry[]
+  entries: Entry[],
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: []
+  entries: [],
 }
-
 
 export const EntriesProvider: FC<Props> = ({ children }) => {
 
@@ -26,18 +26,41 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
     dispatch({ type: '[Entries]-AddEntry', payload: newEntry })
   }
 
-  const updateEntry = async ({ id, description, status }: Entry) => {
+  const updateEntry = async ({ id, description, status }: Entry, showAlert: boolean) => {
+    // console.log({description, status})
     try {
       const resp = await fetch(`/api/entries/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({description, status})
+        body: JSON.stringify({ description, status })
       })
       const entry: Entry = await resp.json()
 
       dispatch({ type: '[Entries]-EntryUpdated', payload: entry })
+      if (showAlert) {
+
+        toast.success('Entry Update Successfully.', {
+          className: 'alert alert-secondary alert-soft',
+        });
+      }
+
+    } catch (err) {
+      console.log('error', err)
+    }
+  }
+
+  const deleteEntry = async (id: string) => {
+    // console.log({description, status})
+    try {
+      const resp = await fetch(`/api/entries/${id}`, {
+        method: "DELETE",
+      })
+      const data = await resp.json()
+
+      dispatch({ type: '[Entries]-EntryDelete', payload: id })
+      toast.success(data.message, { className: 'alert alert-success alert-soft dark:bg-black' });
     } catch (err) {
       console.log('error', err)
     }
@@ -57,7 +80,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
     <EntriesContext value={{
       ...state,
       addNewEntry,
-      updateEntry
+      updateEntry,
+      deleteEntry
     }}>
       {children}
     </EntriesContext>

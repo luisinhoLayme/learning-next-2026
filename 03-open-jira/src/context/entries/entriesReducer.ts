@@ -4,7 +4,9 @@ import { EntriesState } from './'
 type EntriesActionType =
 | { type: '[Entries]-AddEntry', payload: Entry }
 | { type: '[Entries]-EntryUpdated', payload: Entry }
+| { type: '[Entries]-EntryDelete', payload: string }
 | { type: '[Entries]-RefreshData', payload: Entry[] }
+| { type: '[Entries]-ToggleAlert', payload: boolean }
 
 export const entriesReducer = (state: EntriesState, action: EntriesActionType): EntriesState => {
   switch (action.type) {
@@ -24,7 +26,19 @@ export const entriesReducer = (state: EntriesState, action: EntriesActionType): 
           }
 
           return entry
-        })
+        }),
+      }
+
+    case '[Entries]-EntryDelete':
+      return {
+        ...state,
+        entries: state.entries.filter(entry => entry.id !== action.payload)
+      }
+
+    case '[Entries]-ToggleAlert':
+      return {
+        ...state,
+        toggleAlert: action.payload
       }
 
     case '[Entries]-RefreshData':

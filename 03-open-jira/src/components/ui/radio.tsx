@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
+import { EntryStatus } from '@/interfaces/entry';
+import { ChangeEvent, type Dispatch, type FC, type SetStateAction, useState } from 'react';
 
-const Radio = () => {
-  // 1. Estado para almacenar el valor seleccionado
-  const [estadoSeleccionado, setEstadoSeleccionado] = useState('pending');
+interface Props {
+  status: EntryStatus
+  setStatus: Dispatch<SetStateAction<EntryStatus>>
+}
 
-  // Opciones del radio
-  const status = [
-    { value: 'pending', label: 'Pendiente' },
-    { value: 'progress', label: 'En Progreso' },
-    { value: 'finished', label: 'Terminado' },
+const Radio:FC<Props> = ({ status, setStatus }) => {
+
+  const validStatus = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'progress', label: 'Progress' },
+    { value: 'finished', label: 'Finished' },
   ];
 
-  // 2. Función para manejar el cambio
-  const handleChange = (event) => {
-    // Obtenemos el nuevo valor seleccionado
-    setEstadoSeleccionado(event.target.value);
-    // Aquí puedes realizar cualquier otra acción con event.target.value
-    console.log("Nuevo estado seleccionado:", event.target.value);
+  const onStatusChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value as EntryStatus
+    setStatus(value);
   };
 
   return (
-    <div className="p-4 bg-base-100 rounded-lg shadow-md">
+    <div className="p-4 bg-base-100/50 rounded-lg shadow-md mt-2 mb-4">
       <p className="mb-3 font-semibold text-lg">Status Entry</p>
 
       <div className="flex flex-col space-y-2">
-        {status.map((s) => (
+        {validStatus.map((s) => (
           <label
             key={s.value}
             className="label cursor-pointer justify-start space-x-3"
@@ -34,11 +34,9 @@ const Radio = () => {
               type="radio"
               name="tarea-estado"
               value={s.value}
-              // El radio se marca si su valor coincide con el estado
-              checked={estadoSeleccionado === s.value}
-              onChange={handleChange}
-              // Clase 'radio' de daisyUI
-              className="radio radio-primary"
+              checked={status === s.value}
+              onChange={onStatusChanged}
+              className="radio radio-secondary"
             />
 
             {/* Etiqueta visible */}
@@ -46,10 +44,6 @@ const Radio = () => {
           </label>
         ))}
       </div>
-
-      <p className="mt-4 text-sm text-gray-600">
-        Valor obtenido: <span className="font-bold text-primary">{estadoSeleccionado}</span>
-      </p>
     </div>
   );
 };

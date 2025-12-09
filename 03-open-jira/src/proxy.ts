@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-
-const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-function isValidUUID(uuidString: string) {
-  return uuidRegex.test(uuidString);
-}
+import { isValidUUID } from './utils/is-validUUID'
 
 // This function can be marked `async` if using `await` inside
 export function proxy(req: NextRequest) {

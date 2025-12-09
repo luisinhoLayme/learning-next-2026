@@ -39,7 +39,8 @@ const EntryList:FC<Props> = ({ status }) => {
 
     const entry = entries.find(e => e.id === id)!
     entry.status = status
-    updateEntry(entry)
+    // console.log(entry)
+    updateEntry(entry, false)
     endDragging()
   }
 
@@ -47,7 +48,7 @@ const EntryList:FC<Props> = ({ status }) => {
     <section
       onDrop={onDropEntry}
       onDragOver={allowDrop}
-      className={`${isDragging ? 'bg-amber-50/5 border-dashed border-amber-50/30 border-2 ':'border-2 border-transparent'} w-full h-[calc(100vh-120px)] p-2 rounded-md`}
+      className={`${isDragging ? 'dark:bg-amber-50/5 border-dashed dark:border-amber-50/30 border-2 ':'border-2 border-transparent'} w-full h-[calc(100vh-120px)] p-2 rounded-md`}
     >
       <ul
         className={`list h-[calc(100vh-125px)] overflow-auto ${ isDragging ? 'opacity-60' : '' }`}
