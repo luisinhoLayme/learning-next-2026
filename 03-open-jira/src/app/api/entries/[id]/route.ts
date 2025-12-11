@@ -25,17 +25,10 @@ export async function GET(request: Request, { params }: Props) {
 export async function PATCH(req: Request, { params }: Props) {
   const { id } = await params;
 
-
   try {
-    const { description, status } = await req.json(); // TODO: esto no funciona en propduccion ver
-
-    const entry = await prisma.entry.findUnique({ where: { id } })
-    if (!entry) {
-      return NextResponse.json({ message: `Entry not found with id ${id}` }, { status: 400 });
-    }
+    const { description, status } = await req.json()
 
     const dataToUpdate: { description?: string, status?: EntryStatus } = {};
-
 
     if (description !== undefined) {
       if (typeof description !== 'string') return NextResponse.json({ message: 'description must be string' }, { status: 400 });
@@ -62,8 +55,9 @@ export async function PATCH(req: Request, { params }: Props) {
     return NextResponse.json(updateEntry, { status: 200 });
   } catch (err: any) {
     console.error('Error:', err);
+
     if (err.code === 'P2025') {
-      return NextResponse.json({ message: `Entrada con ID ${id} no encontrada.` }, { status: 404 });
+      return NextResponse.json({ message: `Entry with ID ${id} not found.` }, { status: 404 });
     }
     return NextResponse.json({ message: `Internal Server Error ${err.message}` }, { status: 500 });
   }
