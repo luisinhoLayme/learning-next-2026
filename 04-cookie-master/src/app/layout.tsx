@@ -21,11 +21,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookie = await cookies()
-  console.log('layout: ',cookie.getAll())
-  const theme = cookie.get('theme')?.value ?? 'light'
 
   return (
-    <html lang="en" data-theme={`${theme}`}>
+    <html lang="en">
       <body
         className={`${roboto.className} antialiased`}
       >

@@ -28,15 +28,15 @@ export default function ThemeRadios({themeC}: {themeC: string}) {
     console.log(data)
   }
 
-  // useEffect(() => {
-  //   // Aplica la "clase" o atributo en el root del documento para que puedas
-  //   // condicionar estilos globales desde CSS (si lo necesitas).
-  //   const themeLocal = localStorage.getItem("theme") || "light";
-  //   const cookies = Cookie.get('theme') || 'light'
-  //
-  //   // document.documentElement.setAttribute("data-theme", cookies);
-  //   setTheme(cookies)
-  // }, []);
+  useEffect(() => {
+    // Aplica la "clase" o atributo en el root del documento para que puedas
+    // condicionar estilos globales desde CSS (si lo necesitas).
+    const themeLocal = localStorage.getItem("theme") || "light";
+    const cookies = Cookie.get('theme') || 'light'
+
+    document.documentElement.setAttribute("data-theme", cookies);
+    setTheme(cookies)
+  }, []);
 
   const themeClasses: any = {
     light: "bg-white text-slate-900",

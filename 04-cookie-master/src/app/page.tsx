@@ -25,7 +25,7 @@ export default async function Home() {
   console.log(theme)
 
   return (
-    <main className="bg-red-200 dark:bg-pink-900">
+    <main className="bg-red-200/10 dark:bg-pink-900/10">
       <ThemeRadios themeC={theme} />
     </main>
   );
