@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { useState, useRef, useEffect, KeyboardEvent, ClipboardEvent, Ref } from 'react';
 
 export default function OTPVerification() {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const inputRefs = useRef([]);
+  const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     if (inputRefs.current[0]) {
@@ -12,44 +13,44 @@ export default function OTPVerification() {
     }
   }, []);
 
-  const handleChange = (index, value) => {
-    if (isNaN(value)) return;
+  const handleChange = (index:number, value:string) => {
+    if (isNaN(Number(value))) return;
 
     const newOtp = [...otp];
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
 
     if (value && index < 5) {
-      inputRefs.current[index + 1].focus();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
-  const handleKeyDown = (index, e) => {
+  const handleKeyDown = (index: number, e:KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
       if (!otp[index] && index > 0) {
-        inputRefs.current[index - 1].focus();
+        inputRefs.current[index - 1]?.focus();
       }
     } else if (e.key === 'ArrowLeft' && index > 0) {
-      inputRefs.current[index - 1].focus();
+      inputRefs.current[index - 1]?.focus();
     } else if (e.key === 'ArrowRight' && index < 5) {
-      inputRefs.current[index + 1].focus();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
-  const handlePaste = (e) => {
+  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').slice(0, 6);
     const newOtp = [...otp];
 
     for (let i = 0; i < pastedData.length; i++) {
-      if (!isNaN(pastedData[i])) {
+      if (!isNaN(Number(pastedData[i]))) {
         newOtp[i] = pastedData[i];
       }
     }
 
     setOtp(newOtp);
     const nextIndex = Math.min(pastedData.length, 5);
-    inputRefs.current[nextIndex].focus();
+    inputRefs.current[nextIndex]?.focus();
   };
 
   const handleSubmit = () => {
@@ -63,64 +64,49 @@ export default function OTPVerification() {
 
   const handleResend = () => {
     setOtp(['', '', '', '', '', '']);
-    inputRefs.current[0].focus();
+    inputRefs.current[0]?.focus();
     alert('Código reenviado');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Verificación OTP</h2>
-          <p className="text-gray-600 text-sm sm:text-base">
-            Ingresa el código de 6 dígitos enviado a tu teléfono
-          </p>
-        </div>
+    <div className="">
+      <div className="flex gap-2 sm:gap-3 md:gap-4 justify-between mb-6">
+        {otp.map((digit, index) => (
+          <input
+            key={index}
+            ref={(el:HTMLInputElement | null) => { inputRefs.current[index] = el }}
+            type="text"
+            inputMode="numeric"
+            maxLength={1}
+            value={digit}
+            onChange={(e) => handleChange(index, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(index, e)}
+            onPaste={handlePaste}
+            className="w-10 h-16 min-[390px]:w-12 min-[390px]:h-20 min-[440px]:w-14 text-center text-xl sm:text-2xl font-bold bg-graylight rounded-lg focus:ring-3 focus:ring-primary/30 focus:outline-none transition-all duration-200"
+          />
+        ))}
+      </div>
 
-        <div className="flex gap-2 sm:gap-3 md:gap-4 justify-center mb-6">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              ref={(el) => (inputRefs.current[index] = el)}
-              type="text"
-              inputMode="numeric"
-              maxLength="1"
-              value={digit}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              onPaste={handlePaste}
-              className="w-10 h-12 sm:w-12 sm:h-14 md:w-14 md:h-16 text-center text-xl sm:text-2xl font-bold bg-gray-100 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none transition-all duration-200"
-            />
-          ))}
-        </div>
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-primary text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-primary/30 transition-all duration-200 mb-4"
+      >
+        Verify OTP Code
+      </button>
 
+      <div className="flex justify-center items-center gap-1">
+        <p className="text-secondary text-sm">Didn't recive code?</p>
         <button
-          onClick={handleSubmit}
-          className="w-full bg-indigo-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 transition-all duration-200 mb-4"
+          onClick={handleResend}
+          className="text-primary-variant hover:text-primary cursor-pointer transition-colors duration-200 text-sm"
         >
-          Verificar Código
+          Resend
         </button>
+      </div>
 
-        <div className="text-center">
-          <p className="text-gray-600 text-sm mb-2">¿No recibiste el código?</p>
-          <button
-            onClick={handleResend}
-            className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors duration-200 text-sm sm:text-base"
-          >
-            Reenviar código
-          </button>
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
-            Código actual: <span className="font-mono font-semibold text-gray-700">{otp.join('') || '------'}</span>
-          </p>
-        </div>
+      <div className="mt-2 flex gap-2 justify-center">
+        <p className="text-sm text-secondary">Return to</p>
+        <Link href="/sign-in" className="text-sm text-primary-variant hover:underline">Sign In</Link>
       </div>
     </div>
   );
