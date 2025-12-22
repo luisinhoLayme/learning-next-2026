@@ -1,8 +1,10 @@
+import Verify from '@/components/verify'
 
 const VerifyPage = () => {
   return (
-    <main>
+    <main className="overflow-hidden">
       <section className="
+        relative
         w-[150%] h-[50vh]
         -translate-x-36
         -translate-y-20
@@ -19,6 +21,7 @@ const VerifyPage = () => {
         bg-[linear-gradient(to_bottom,#ff4b72_0%,#a33ccc_50%,#9e6034_75%,#992d44_100%)]
         ">
       </section>
+      <Verify />
     </main>
   )
 }
