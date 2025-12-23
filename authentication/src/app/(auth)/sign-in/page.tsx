@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import FormSignIn from '@/components/auth/form-sign-in'
+import SignInForm from './signin-form'
 import ButtonGoogle from '@/components/auth/button-google'
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ const SignIn = () => {
       <p className="text-secondary font-sans text-sm text-center my-5">Or sign in with email</p>
 
       <div className="max-w-md mx-auto">
-        <FormSignIn />
+        <SignInForm />
       </div>
     </section>
   )

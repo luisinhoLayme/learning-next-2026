@@ -1,4 +1,4 @@
-import FormForgot from '@/components/auth/form-forgot'
+import ForgotForm from './forgot-form'
 
 const Forgot = () => {
   return (
@@ -10,7 +10,7 @@ const Forgot = () => {
         <p className="text-secondary font-sans text-sm text-center my-5">Hate it when that happens!
           Whats your email address?
           We will send you a link to reset it</p>
-        <FormForgot />
+        <ForgotForm />
       </div>
     </section>
   )

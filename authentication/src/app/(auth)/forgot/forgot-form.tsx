@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-const FormForgot = () => {
+const ForgotForm = () => {
 
   return (
     <form action="" className="grid gap-5">
@@ -25,4 +25,4 @@ const FormForgot = () => {
   )
 }
 
-export default FormForgot
+export default ForgotForm

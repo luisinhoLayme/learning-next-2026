@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { EyeOff, EyeIcon } from 'lucide-react'
 import Link from 'next/link'
 
-const FormSignIn = () => {
+const SignInForm = () => {
   const [showPass, setShowPass] = useState('password')
 
   return (
@@ -64,4 +64,4 @@ const FormSignIn = () => {
   )
 }
 
-export default FormSignIn
+export default SignInForm

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import ButtonGoogle from "@/components/auth/button-google";
-import FormSignUp from '@/components/auth/form-sign-up'
+import SignUpForm from './signup-form'
 
 export const metadata: Metadata = {
   title: "Sign Up",
@@ -20,7 +20,7 @@ const SignUp = () => {
       <p className="text-secondary font-sans text-sm text-center my-5">Or sign up with email</p>
 
       <div className="max-w-md mx-auto">
-        <FormSignUp />
+        <SignUpForm />
       </div>
     </section>
   )

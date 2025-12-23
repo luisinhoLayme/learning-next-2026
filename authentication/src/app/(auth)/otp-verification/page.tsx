@@ -1,4 +1,4 @@
-import OTPVerification from '@/components/auth/form-otp'
+import OTPVerification from './otp-form'
 
 const OtpVerification = () => {
   return (

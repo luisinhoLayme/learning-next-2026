@@ -1,4 +1,4 @@
-import FormResetPassword from '@/components/auth/form-reset-password'
+import ResetPasswordForm from './reset-form'
 
 const ResetPassword = () => {
   return (
@@ -10,7 +10,7 @@ const ResetPassword = () => {
         <p className="text-secondary font-sans text-sm text-center my-5">
           Enter a new password for <span className="text-primary-variant">your@example.com</span>
         </p>
-          <FormResetPassword />
+          <ResetPasswordForm />
       </div>
     </section>
   )
