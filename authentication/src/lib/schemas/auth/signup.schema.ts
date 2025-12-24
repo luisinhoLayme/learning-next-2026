@@ -1,25 +1,25 @@
-
 import { z } from "zod";
 
 export const signInSchema = z.object({
-  email: z.email({ message: 'Introduce un correo válido.' }),
-  password: z.string().min(6, "Mínimo 6 caracteres"),
+  email: z.email({ message: 'Please enter a valid email.' }),
+  password: z.string().min(6, "Minimum 6 characters."),
 });
 
 export const signUpSchema = z.object({
-  fullName: z.string().min(2, { message: 'El nombre debe tener al menos 2 caracteres.' }).trim(),
-  mail: z.email({ message: 'Introduce un correo válido.' }).trim(),
+  fullName: z.string().min(2, { message: 'Name must be at least 2 characters long.' }).trim(),
+  mail: z.email({ message: 'Please enter a valid email.' }).trim(),
   password: z.string()
-    .min(8, { message: 'Mínimo 8 caracteres.' })
-    .regex(/[a-zA-Z]/, { message: 'Debe contener al menos una letra.' })
-    .regex(/[0-9]/, { message: 'Debe contener al menos un número.' })
+    .min(8, { message: 'Minimum 8 characters.' })
+    .regex(/[a-z]/, { message: 'Must contain at least one lowercase letter.' })
+    .regex(/[A-Z]/, { message: 'Must contain at least one uppercase letter.' }) // <-- Regex para mayúscula añadida
+    .regex(/[0-9]/, { message: 'Must contain at least one number.' })
     .trim(),
   confirmPassword: z.string().trim(),
   terms: z.boolean().refine((val) => val === true, {
-    message: 'Debes aceptar los términos y condiciones.',
+    message: 'You must accept the terms and conditions.',
   }),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Las contraseñas no coinciden",
+  message: "Passwords do not match.",
   path: ["confirmPassword"],
 });
 

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { EyeOff, EyeIcon } from 'lucide-react'
 import { signUpAction } from './actions'
+import FormError from '@/components/form-error'
 
 const SignUpForm = () => {
   const [showPass, setShowPass] = useState('password')
@@ -13,7 +14,7 @@ const SignUpForm = () => {
   console.log(state)
 
   return (
-    <form action={action} className="grid gap-5">
+    <form action={action} className="grid gap-3">
       <div className="relative">
         <input
           placeholder="Full Name"
@@ -22,7 +23,9 @@ const SignUpForm = () => {
           type="text"
           defaultValue={state?.data?.fullName}
         />
-        {state?.errors && <p className="text-xs absolute top-full text-red-400">{state.errors.fullName}</p>}
+        <div className="">
+          {<FormError error={state?.errors?.fullName} />}
+        </div>
       </div>
       <div className="relative">
         <input
@@ -32,56 +35,66 @@ const SignUpForm = () => {
           type="email"
           defaultValue={state?.data?.mail}
         />
-        {state?.errors && <p className="text-xs absolute top-full text-red-400">{state.errors.mail}</p>}
+        <div className="">
+          {<FormError error={state?.errors?.mail} />}
+        </div>
       </div>
       <div className="relative">
-        {showPass === 'password'
-          ? <EyeOff
-            onClick={() => setShowPass('text')}
-            className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
-            size={20}
-          />
-          : <EyeIcon
-            onClick={() => setShowPass('password')}
-            className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
-            size={20}
-          />
-        }
+        <div className="relative">
+          {showPass === 'password'
+            ? <EyeOff
+              onClick={() => setShowPass('text')}
+              className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
+              size={20}
+            />
+            : <EyeIcon
+              onClick={() => setShowPass('password')}
+              className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
+              size={20}
+            />
+          }
 
-        <input
-          placeholder="Password"
-          name="password"
-          className="bg-graylight p-2 pl-3 pr-10 w-full h-13 rounded-lg border-none outline-none focus:ring-3 focus:ring-primary/30"
-          type={showPass}
-          defaultValue={state?.data?.password}
-        />
-        {state?.errors && <p className="text-xs absolute top-full text-red-400">{state.errors.password}</p>}
+          <input
+            placeholder="Password"
+            name="password"
+            className="bg-graylight p-2 pl-3 pr-10 w-full h-13 rounded-lg border-none outline-none focus:ring-3 focus:ring-primary/30"
+            type={showPass}
+            defaultValue={state?.data?.password}
+          />
+        </div>
+        <div className="">
+          {<FormError error={state?.errors?.password} />}
+        </div>
       </div>
       <div className="relative">
-        {showPassConfirm === 'password'
-          ? <EyeOff
-            onClick={() => setShowPassConfirm('text')}
-            className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
-            size={20}
-          />
-          : <EyeIcon
-            onClick={() => setShowPassConfirm('password')}
-            className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
-            size={20}
-          />
-        }
+        <div className="">
+          {showPassConfirm === 'password'
+            ? <EyeOff
+              onClick={() => setShowPassConfirm('text')}
+              className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
+              size={20}
+            />
+            : <EyeIcon
+              onClick={() => setShowPassConfirm('password')}
+              className="absolute right-4 top-1/2 text-secondary cursor-pointer -translate-y-1/2"
+              size={20}
+            />
+          }
 
-        <input
-          placeholder="Confirm Password"
-          name="confirmPassword"
-          className="bg-graylight p-2 pl-3 pr-10 w-full h-13 rounded-lg border-none outline-none focus:ring-3 focus:ring-primary/30"
-          type={showPassConfirm}
-          defaultValue={state?.data?.confirmPassword}
-        />
-        {state?.errors && <p className="text-xs absolute top-full text-red-400">{state.errors.confirmPassword}</p>}
+          <input
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            className="bg-graylight p-2 pl-3 pr-10 w-full h-13 rounded-lg border-none outline-none focus:ring-3 focus:ring-primary/30"
+            type={showPassConfirm}
+            defaultValue={state?.data?.confirmPassword}
+          />
+        </div>
+        <div className="">
+          {<FormError error={state?.errors?.confirmPassword} />}
+        </div>
       </div>
       <div>
-        <div className="text-sm flex justify-between mb-1">
+        <div className="text-sm flex justify-between mb-1 flex-col">
           <label className="flex items-center ">
             <div className="relative">
               <input type="checkbox" name="terms" className="sr-only peer " />
@@ -98,6 +111,9 @@ const SignUpForm = () => {
               <Link className="text-primary-variant" href="/privacy-police"> Privacy Police</Link>
             </span>
           </label>
+          <div className="">
+            {<FormError error={state?.errors?.terms} />}
+          </div>
         </div>
 
         <button type="submit" disabled={pending} className="bg-primary hover:bg-blue-300 transition-colors w-full p-3 text-white rounded-lg font-medium cursor-pointer outline-none focus:ring-3 focus:ring-primary/30">Create Account</button>
