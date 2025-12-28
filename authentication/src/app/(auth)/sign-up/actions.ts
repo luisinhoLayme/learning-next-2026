@@ -1,6 +1,6 @@
 "use server";
 
-import { FormState } from "@/interfaces/signup.interface";
+import { FormState } from "@/interfaces/auth.interface";
 import { SignUpInput, signUpSchema } from "@/lib/schemas/auth/signup.schema";
 import z from "zod";
 import { env } from '@/lib/schemas/env'

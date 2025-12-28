@@ -24,6 +24,9 @@ export default async function Home() {
   const theme = validThemes.includes(themeCookie) ? themeCookie : 'light'
   console.log(theme)
 
+  const res = await fetch('http://localhost:3001/api/hello')
+  console.log(res)
+
   return (
     <main className="bg-red-200/10 dark:bg-pink-900/10">
       <ThemeRadios themeC={theme} />

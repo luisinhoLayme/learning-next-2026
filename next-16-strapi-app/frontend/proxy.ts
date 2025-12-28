@@ -17,7 +17,7 @@ export const proxy = async (request: NextRequest) => {
 
   try {
     const cookieStore = await cookies()
-    const jwt = cookieStore.get('jwt').value
+    const jwt = cookieStore.get('jwt')?.value
     if(!jwt) {
       return NextResponse.redirect(new URL('/signin', request.url))
     }
