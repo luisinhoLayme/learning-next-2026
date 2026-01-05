@@ -1,13 +1,13 @@
 "use server";
 
 import { FormState } from "@/interfaces/auth.interface";
-import { SignUpInput, signUpSchema } from "@/lib/schemas/auth/signup.schema";
+import { signUpSchema } from "@/lib/schemas/auth/signup.schema";
 import z from "zod";
-import { env } from '@/lib/schemas/env'
 import { authService } from "@/lib/services/auth.service";
+import { redirect } from "next/navigation";
 
 export async function signUpAction(_: any, formData: FormData): Promise<FormState> {
-  console.log(env.NEXT_PUBLIC_API_URL)
+
   const fields = {
     fullName: formData.get('fullName') as string,
     mail: formData.get('mail') as string,
@@ -26,20 +26,15 @@ export async function signUpAction(_: any, formData: FormData): Promise<FormStat
     };
   }
 
-  try {
-    // 2. Llamamos al servicio
-    const user = await authService.signUp(validateFields.data);
+  const result = await authService.signUp(validateFields.data);
 
+  if (!result.ok) {
     return {
-      data: user,
-      errors: null,
-      success: true
+      data: fields,
+      errors: result,
+      success: false
     };
-  } catch (error: any) {
-    // 3. Manejamos errores del backend
-    console.log(error)
-    return { errors: error.message, success: false, data: fields };
   }
 
-  // await signUp(parsed.data);
+  redirect('/')
 }

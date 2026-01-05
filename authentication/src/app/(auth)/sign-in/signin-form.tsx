@@ -5,25 +5,14 @@ import { EyeOff, EyeIcon, Loader } from 'lucide-react'
 import Link from 'next/link'
 import { signInAction } from './actions'
 import FormError from '@/components/form-error'
+import { useErrorTimeout } from '@/hooks/useErrorTimeout'
 
 const SignInForm = () => {
   const [showPass, setShowPass] = useState('password')
 
   const [state, action, pending] = useActionState(signInAction, undefined)
 
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (state?.errors?.result) {
-      setIsVisible(true);
-
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 3000);
-
-      return () => clearTimeout(timer)
-    }
-  }, [state]);
+  const [isVisible] = useErrorTimeout(state?.errors?.result)
 
   return (
     <form action={action} className="grid gap-5">
@@ -87,7 +76,7 @@ const SignInForm = () => {
         >
           {pending ? <Loader className="animate-spin" /> : 'Sign In'}
         </button>
-        {isVisible &&
+        {isVisible && state?.errors?.result &&
           <div className="text-center text-sm bg-red-50 text-red-400 mt-1 p-3 rounded-lg">
             {state?.errors?.result?.message}
           </div>

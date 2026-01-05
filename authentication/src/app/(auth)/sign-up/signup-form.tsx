@@ -2,16 +2,18 @@
 
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
-import { EyeOff, EyeIcon } from 'lucide-react'
+import { EyeOff, EyeIcon, Loader } from 'lucide-react'
 import { signUpAction } from './actions'
 import FormError from '@/components/form-error'
+import { useErrorTimeout } from '@/hooks/useErrorTimeout'
 
 const SignUpForm = () => {
   const [showPass, setShowPass] = useState('password')
   const [showPassConfirm, setShowPassConfirm] = useState('password')
 
   const [state, action, pending] = useActionState(signUpAction, undefined)
-  console.log(state)
+
+  const [isVisible] = useErrorTimeout(state?.errors?.result)
 
   return (
     <form action={action} className="grid gap-3">
@@ -116,7 +118,19 @@ const SignUpForm = () => {
           </div>
         </div>
 
-        <button type="submit" disabled={pending} className="bg-primary hover:bg-blue-300 transition-colors w-full p-3 text-white rounded-lg font-medium cursor-pointer outline-none focus:ring-3 focus:ring-primary/30">Create Account</button>
+        <button
+          type="submit"
+          disabled={pending}
+          className="bg-primary hover:bg-blue-300 transition-colors w-full p-3 text-white rounded-lg font-medium cursor-pointer outline-none focus:ring-3 focus:ring-primary/30 flex justify-center items-center"
+        >
+          {pending ? <Loader className="animate-spin" /> : 'Create Account'}
+        </button>
+
+        {isVisible && state?.errors?.result &&
+          <div className="text-center text-sm bg-red-50 text-red-400 mt-1 p-3 rounded-lg">
+            {state?.errors?.result?.message}
+          </div>
+        }
       </div>
       <div className="flex gap-2 justify-center">
         <p className="text-sm text-secondary">Have an account?</p>

@@ -32,7 +32,7 @@ export const authService = {
           fullName: data.fullName,
           email: data.mail,
           password: data.password,
-          // No enviamos confirmPassword al backend, solo lo usamos para validación en el cliente
+          acceptTerms: data.terms
         }),
       });
       const cookiesHeaders: string[] = response.headers.getSetCookie()
@@ -42,11 +42,11 @@ export const authService = {
       const result = await response.json();
 
       if (!response.ok) {
-        // Lanzamos un error con el mensaje que venga del backend o uno genérico
-        throw new Error(result.message || "An error occurred during sign up");
+        // throw new Error(result.message || "An error occurred during sign up");
+        return { ok: false, result }
       }
 
-      return result;
+      return {ok: true, result}
     } catch (error) {
       console.error("Sign Up Service Error:", error);
       throw error;
@@ -80,39 +80,5 @@ export const authService = {
       console.error("Sign In Service Error:", error);
       throw error;
     }
-  },
-  refershToken: async () => {
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get('refreshToken')?.value;
-
-    if (!refreshToken) return { ok: false };
-
-    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/refresh-token`, {
-      method: "POST",
-      headers: { 'Cookie': `refreshToken=${refreshToken}` }
-    });
-
-    if (!res.ok) return { ok: false };
-
-    // Extraemos las cookies del backend
-    const setCookieHeaders = res.headers.getSetCookie();
-    const parsedCookies = parse(setCookieHeaders);
-
-    // await setCookie(setCookieHeaders)
-    // console.log(parsedCookies)
-
-
-    // Las guardamos en el store de Next.js
-    parsedCookies.forEach((cookie) => {
-      cookieStore.set(cookie.name, cookie.value, {
-        httpOnly: cookie.httpOnly,
-        secure: cookie.secure,
-        sameSite: cookie.sameSite as 'lax' | 'strict' | 'none',
-        path: cookie.path || '/',
-        maxAge: cookie.maxAge,
-      });
-    });
-
-    return { ok: true };
   }
 };

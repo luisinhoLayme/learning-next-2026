@@ -33,5 +33,5 @@ export async function signInAction(_: any, formData: FormData): Promise<FormStat
     };
   }
 
-  redirect('/dashboard')
+  redirect('/')
 }
