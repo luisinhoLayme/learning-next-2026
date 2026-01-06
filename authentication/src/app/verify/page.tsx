@@ -1,6 +1,14 @@
 import Verify from '@/components/verify'
+import { getAuthenticatedUser } from '@/lib/session';
+import { permanentRedirect } from 'next/navigation';
 
-const VerifyPage = () => {
+interface VerifyPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const VerifyPage = async({ searchParams }: VerifyPageProps) => {
+  const user = await getAuthenticatedUser()
+
   return (
     <main className="overflow-hidden">
       <section className="
@@ -21,7 +29,7 @@ const VerifyPage = () => {
         bg-[linear-gradient(to_bottom,#ff4b72_0%,#a33ccc_50%,#9e6034_75%,#992d44_100%)]
         ">
       </section>
-      <Verify />
+      <Verify email={user.email} />
     </main>
   )
 }

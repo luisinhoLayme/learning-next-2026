@@ -1,21 +1,24 @@
 import { ReactNode } from "react";
 import { getAuthenticatedUser } from '@/lib/session'
 import { redirect } from "next/navigation";
+import { UserProvider } from "@/context/user";
 
 interface Props {
   children: ReactNode;
-  requiredRole?: "admin" | "user";
+  requiredRole?: "ADMIN" | "USER";
 }
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+// const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 export default async function ProtectedLayout({ children, requiredRole }: Props) {
 
-  // await delay(4000)
-  const user = await getAuthenticatedUser(requiredRole)
-  console.log(user)
+  const user = await getAuthenticatedUser()
 
-  if (!user?.verify) redirect("/verify");
+  if (!user?.verify) {
+    redirect(`/verify`);
+  }
   if (requiredRole && user.role !== requiredRole) redirect("/");
 
-  return <>{children}</>;
+  return <UserProvider user={user}>
+    {children}
+  </UserProvider>;
 }

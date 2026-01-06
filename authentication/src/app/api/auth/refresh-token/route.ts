@@ -26,7 +26,11 @@ export async function GET(request: Request) {
       // body: JSON.stringify({ refreshToken }),
     })
 
-    if (!apiRes.ok) throw new Error('Refresh failed')
+    if (!apiRes.ok) {
+      cookieStore.delete('refreshToken')
+      return NextResponse.redirect(new URL('/', request.url))
+    // throw new Error('Refresh failed')
+    }
 
     const data = await apiRes.json()
 
