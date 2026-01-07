@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { getAuthenticatedUser } from '@/lib/session'
 import { redirect } from "next/navigation";
 import { UserProvider } from "@/context/user";
+import SidebarWrapper from '@/components/dashboard/sidebar-wrapper'
 
 interface Props {
   children: ReactNode;
@@ -19,6 +20,8 @@ export default async function ProtectedLayout({ children, requiredRole }: Props)
   if (requiredRole && user.role !== requiredRole) redirect("/");
 
   return <UserProvider user={user}>
-    {children}
+    <SidebarWrapper>
+      {children}
+    </SidebarWrapper>
   </UserProvider>;
 }

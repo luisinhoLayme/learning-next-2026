@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { LayoutDashboard, LogIn, LogOut } from "lucide-react"
+import { LayoutDashboard, LayoutDashboardIcon, LogIn, LogOut, Zap } from "lucide-react"
 import { User } from '@/interfaces/auth.interface'
 import { FC } from "react";
 
@@ -44,6 +44,24 @@ const Navbar: FC<Props> = ({ user }) => {
           {user ? (
             // ESTADO: USUARIO LOGUEADO
             <>
+              {user.role === "ADMIN" &&
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
+                >
+                  {/* <LayoutDashboard className="h-4 w-4" /> */}
+                  <LayoutDashboardIcon className="h-4 w-4" />
+                  <span className="hidden sm:inline">Admin</span>
+                </Link>
+              }
+
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
+              >
+                <Zap className="h-4 w-4" />
+                <span className="hidden sm:inline">Dashboard</span>
+              </Link>
               <Link
                 href="/dashboard"
                 className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
