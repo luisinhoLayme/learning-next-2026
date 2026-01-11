@@ -1,6 +1,7 @@
 "use client"
 
 import { BarChart3, PanelLeft, PanelLeftClose, Settings, Users } from "lucide-react";
+import Link from "next/link";
 import { type Dispatch, type SetStateAction } from "react";
 export interface SidebarProps {
   collapsed: boolean;
@@ -33,11 +34,14 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
         </button>
       </div>
 
-      <nav className="flex-1 px-2 space-y-1">
-        <SidebarItem collapsed={collapsed} label="Usuarios" icon={Users} />
-        <SidebarItem collapsed={collapsed} label="Analíticas" icon={BarChart3} />
-        <SidebarItem collapsed={collapsed} label="Ajustes" icon={Settings} />
-      </nav>
+      <div className="flex flex-col justify-between">
+        <nav className="flex-1 px-2 space-y-1">
+          <SidebarItem collapsed={collapsed} label="Usuarios" icon={Users} />
+          <SidebarItem collapsed={collapsed} label="Analíticas" icon={BarChart3} />
+          <SidebarItem collapsed={collapsed} label="Ajustes" icon={Settings} />
+        </nav>
+        <Link href="/api/auth/logout" className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors w-full block">Log Out</Link>
+      </div>
     </aside>
   );
 }

@@ -3,6 +3,7 @@ import { env } from "@/lib/schemas/env";
 import { cookies } from "next/headers";
 import parse, { Cookie } from 'set-cookie-parser';
 import { SignInInput } from "../schemas/auth/signin.schema";
+import { redirect } from "next/navigation";
 
 export const setCookie = async (cookiesHeader: string[]) => {
   const parsedCookies: Cookie[] = parse(cookiesHeader);
@@ -46,7 +47,7 @@ export const authService = {
         return { ok: false, result }
       }
 
-      return {ok: true, result}
+      return { ok: true, result }
     } catch (error) {
       console.error("Sign Up Service Error:", error);
       throw error;
@@ -75,10 +76,19 @@ export const authService = {
         return { ok: false, result }
       }
 
-      return {ok: true, result}
+      return { ok: true, result }
     } catch (error) {
       console.error("Sign In Service Error:", error);
       throw error;
     }
+  },
+  logout: async () => {
+    "use server"
+    const cookieStore = await cookies();
+    cookieStore.delete("accessToken");
+    cookieStore.delete("refreshToken");
+
+    // redirect() dentro de una Server Action invalida el caché automáticamente
+    redirect("/");
   }
 };

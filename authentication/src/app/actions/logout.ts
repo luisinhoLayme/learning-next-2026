@@ -1,14 +1,14 @@
-import { revalidatePath } from "next/cache";
+// app/actions/auth.ts
+'use server'
+
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function GET() {
+export async function logoutAction() {
   const cookieStore = await cookies();
-
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
 
-  revalidatePath("/", "layout");
-
+  // redirect() dentro de una Server Action invalida el caché automáticamente
   redirect("/");
 }

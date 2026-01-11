@@ -2,12 +2,10 @@ import Verify from '@/components/verify'
 import { getAuthenticatedUser } from '@/lib/session';
 import { permanentRedirect } from 'next/navigation';
 
-interface VerifyPageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-const VerifyPage = async({ searchParams }: VerifyPageProps) => {
+const VerifyPage = async() => {
   const user = await getAuthenticatedUser()
+
+  if(user.verify) permanentRedirect('/')
 
   return (
     <main className="overflow-hidden">

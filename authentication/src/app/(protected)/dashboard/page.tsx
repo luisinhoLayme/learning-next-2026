@@ -1,10 +1,10 @@
-import Profile from '@/components/admin/profile'
-import Link from 'next/link';
+// import Profile from '@/components/admin/profile'
+// import Link from 'next/link';
 import Stats from '@/components/dashboard/stats'
 import UserChart from '@/components/dashboard/user-chart'
 import UsersTable from '@/components/dashboard/users-table'
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+// const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 const DashboardPage = async () => {
   // await delay(4000)

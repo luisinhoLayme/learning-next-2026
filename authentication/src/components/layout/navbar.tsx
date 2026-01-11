@@ -1,16 +1,17 @@
 'use client'
 
+import { type FC } from "react";
 import Link from "next/link";
 import { LayoutDashboard, LayoutDashboardIcon, LogIn, LogOut, Zap } from "lucide-react"
 import { User } from '@/interfaces/auth.interface'
-import { FC } from "react";
+import { UserAccountNav } from "../user-account-nav";
 
 interface Props {
   user: User | null
 }
 
 const Navbar: FC<Props> = ({ user }) => {
-  console.log('navbar', user)
+  // console.log('navbar', user)
 
   return (
     // 1. Contenedor Principal (Efecto Glassmorphism)
@@ -43,42 +44,7 @@ const Navbar: FC<Props> = ({ user }) => {
           {/* --- LÓGICA CONDICIONAL --- */}
           {user ? (
             // ESTADO: USUARIO LOGUEADO
-            <>
-              {user.role === "ADMIN" &&
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
-                >
-                  {/* <LayoutDashboard className="h-4 w-4" /> */}
-                  <LayoutDashboardIcon className="h-4 w-4" />
-                  <span className="hidden sm:inline">Admin</span>
-                </Link>
-              }
-
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
-              >
-                <Zap className="h-4 w-4" />
-                <span className="hidden sm:inline">Dashboard</span>
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-blue-400"
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                <span className="hidden sm:inline">Dashboard</span>
-              </Link>
-
-              {/* Botón de Logout apuntando a tu Route Handler */}
-              <Link
-                href="/api/auth/logout"
-                className="flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 "
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">Salir</span>
-              </Link>
-            </>
+            <UserAccountNav user={user} />
           ) : (
             // ESTADO: PÚBLICO (Invitado)
             <>

@@ -4,6 +4,7 @@ import { getAuthenticatedUser } from '@/lib/session';
 export default async function Home() {
 
   const user = await getAuthenticatedUser().catch(() => null);
+  console.log(user)
 
   return (
     <>
